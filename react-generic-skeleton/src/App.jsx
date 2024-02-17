@@ -1,37 +1,127 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Skeleton from './skeleton/Skeleton'
+import { useEffect, useState } from "react";
+import "./App.css";
+import Skeleton from "./skeleton/Skeleton";
+import logo from "/vite.svg";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [loadingState, setLoadingState] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoadingState(true);
+    }, 5000);
+  }, []);
+
+  const contentBlockData = () => {
+    if (loadingState) {
+      return [...Array(3)].map((item, index) => {
+        return (
+          <div key={index}>
+            <h2>What is Lorem Ipsum?</h2>
+            <p>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum is simply dummy text of the printing and
+              typesetting industry.
+            </p>
+          </div>
+        );
+      });
+    } else {
+      return [...Array(3)].map((item, index) => {
+        return (
+          <div className="skeletonBlock" key={index}>
+            <Skeleton width="300px" height="40px" />
+            <Skeleton height="20px" variant="paragraph" />
+            <Skeleton height="20px" variant="paragraph" />
+            <Skeleton height="20px" variant="paragraph" />
+            <Skeleton height="20px" width="50%" variant="paragraph" />
+          </div>
+        );
+      });
+    }
+  };
+
+  const cardBlockData = () => {
+    if (loadingState) {
+      return [...Array(4)].map((item, index) => {
+        return (
+          <div className="card" key={index}>
+            <div className="cardImage">
+              <img src={logo} alt="logo" width="80px" height="80px" />
+              <div>The React App</div>
+            </div>
+            <div className="cardSkeletonTitle">
+              <h2>What is Lorem ?</h2>
+            </div>
+            <div className="cardSkeletonBody">
+              <p>
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry. Lorem Ipsum has been the industry's standard dummy
+                text ever since the 1500s, when an unknown printer took a galley
+                of type and scrambled it to make a type specimen book. It has
+                survived not only five centuries, but also the leap into
+                electronic typesetting, remaining essentially unchanged. It was
+                popularised in the 1960s with the release of Letra
+              </p>
+            </div>
+          </div>
+        );
+      });
+    } else {
+      return [...Array(4)].map((item, index) => {
+        return (
+          <div className="cardSkeleton" key={index}>
+            <div className="cardImageSkeleton">
+              <Skeleton width="80px" height="80px" variant="circle" />
+              <Skeleton width="100%" height="20px" />
+            </div>
+
+            <div className="cardTitleSkeleton">
+              <Skeleton width="100%" height="30px" />
+            </div>
+
+            <div className="cardBodySkeleton">
+              <Skeleton width="250px" height="350px" />
+            </div>
+          </div>
+        );
+      });
+    }
+  };
 
   return (
     <>
-    <Skeleton width="400px" height="400px" />
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="App">
+        <h1>React Generic Skeleton</h1>
+        <div className="">
+          <h2>Heading Skeleton</h2>
+          {loadingState ? (
+            <div className="heading">
+              <h1>Heading 1</h1>
+              <h2>Heading 2</h2>
+              <h3>Heading 3</h3>
+            </div>
+          ) : (
+            <div className="skeletonBlock">
+              <Skeleton width="200px" height="38px" />
+              <Skeleton width="150px" height="28px" />
+              <Skeleton width="100px" height="25px" />
+            </div>
+          )}
+        </div>
+
+        <div className="">
+          <h2>Content Skeleton</h2>
+          <div className="contentBlock">{contentBlockData()}</div>
+        </div>
+
+        <div className="">
+          <h2>Card Skeleton</h2>
+          <div className="cardBlock">{cardBlockData()}</div>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
