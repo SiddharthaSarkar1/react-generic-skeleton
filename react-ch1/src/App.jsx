@@ -1,26 +1,25 @@
-import { useState, useEffect } from "react";
-import Card from "./components/Card/Card";
-import Skeleton from "./components/Skeleton/Skeleton";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Demo from "./learn-react-query/Demo";
+import { useState } from "react";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    }
+  }
+});
 
 function App() {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-  }, [])
-  
+  const [showDemo, setShowDemo] = useState(true);
 
   return (
-    <>
-      <h1 className="text-3xl font-bold underline text-center">
-        React Skeleton
-      </h1>
-      <div className="flex justify-center items-center h-screen">
-        {loading ? <Skeleton /> : <Card />}
+    <QueryClientProvider client={queryClient}>
+      <div className="flex justify-center">
+      <button className="m-5 p-5 bg-green-300 border border-green-900 rounded font-bold" onClick={() => setShowDemo(!showDemo)}>ToggleDemo</button>
       </div>
-    </>
+      {showDemo && <Demo />}
+    </QueryClientProvider>
   );
 }
 
